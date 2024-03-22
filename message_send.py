@@ -45,7 +45,7 @@ class MessageSend:
             "channel": "wechat",
             "template": "markdown"
         }
-        resp = requests.post("http://www.pushplus.plus/send", data=payload)
+        resp = requests.post("http://www.pushplus.plus/send", data=payload, timeout=60)
         resp_json = resp.json()
         if resp_json["code"] == 200:
             print(f"[Pushplus]Send message to Pushplus successfully.")
@@ -61,7 +61,7 @@ class MessageSend:
             "title": title,
             "desp": content,
         }
-        resp = requests.post(f"https://sctapi.ftqq.com/{sendkey}.send", data=payload)
+        resp = requests.post(f"https://sctapi.ftqq.com/{sendkey}.send", data=payload, timeout=60)
         resp_json = resp.json()
         if resp_json["code"] == 0:
             print(f"[ServerChan]Send message to ServerChan successfully.")
@@ -85,7 +85,7 @@ class MessageSend:
 
         qy_url = proxy_url or "https://qyapi.weixin.qq.com"
         get_token_url = f"{qy_url}/cgi-bin/gettoken?corpid={weCom_corpId}&corpsecret={weCom_corpSecret}"
-        resp = requests.get(get_token_url)
+        resp = requests.get(get_token_url, timeout=60)
         resp_json = resp.json()
         if resp_json["errcode"] != 0:
             print(f"[WeCom][Get Token Response]{resp.text}")
@@ -109,7 +109,7 @@ class MessageSend:
             },
             "duplicate_check_interval": 600
         }
-        resp = requests.post(send_msg_url, data=json.dumps(data))
+        resp = requests.post(send_msg_url, data=json.dumps(data), timeout=60)
         resp_json = resp.json()
         if resp_json["errcode"] == 0:
             print(f"[WeCom]Send message to WeCom successfully.")
@@ -130,7 +130,7 @@ class MessageSend:
                 "content": content
             }
         }
-        resp = requests.post(webhook, headers=headers, data=json.dumps(data))
+        resp = requests.post(webhook, headers=headers, data=json.dumps(data), timeout=60)
         resp_json = resp.json()
         if resp_json["errcode"] == 0:
             print(f"[WeCom]Send message to WeCom successfully.")
@@ -153,7 +153,7 @@ class MessageSend:
             "device_key": device_key
         }
 
-        resp = requests.post(url, headers=headers, data=json.dumps(data))
+        resp = requests.post(url, headers=headers, data=json.dumps(data), timeout=60)
         resp_json = resp.json()
         if resp_json["code"] == 200:
             print(f"[Bark]Send message to Bark successfully.")
@@ -173,7 +173,7 @@ class MessageSend:
 
         data = {"msg_type": "post", "content": {"post": {"zh_cn": {"title": title, "content": [[{"tag": "text", "text": content}]]}}}}
 
-        resp = requests.post(url, headers=headers, json=data)
+        resp = requests.post(url, headers=headers, json=data, timeout=60)
         resp_json = resp.json()
         if resp_json["code"] == 0:
             print(f"[Bark]Send message to Bark successfully.")
